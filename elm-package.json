@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0",
+  "summary": "Parsing JavaScript error the best we can",
+  "repository": "https://github.com/pauldijou/elm-error.git",
+  "license": "Apache-2.0",
+  "source-directories": [
+    "src",
+    "test"
+  ],
+  "exposed-modules": [
+    "Error"
+  ],
+  "native-modules": true,
+  "dependencies": {
+    "elm-lang/core": "5.0.0 <= v < 6.0.0",
+    "pauldijou/elm-ordeal": "1.0.0 <= v < 2.0.0"
+  },
+  "dependency-sources": {
+    "pauldijou/elm-ordeal": {
+      "url": "git@github.com:pauldijou/elm-ordeal.git",
+      "ref": "18ea467ff981ced5d0be04ae144ea3a305a11dcf"
+    }
+  },
+  "elm-version": "0.18.0 <= v < 0.19.0"
+}
