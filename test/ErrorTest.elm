@@ -1,5 +1,6 @@
 port module ErrorTest exposing (..)
 
+import Json.Encode as Encode
 import Ordeal exposing (..)
 
 import Error exposing (Error)
@@ -22,6 +23,8 @@ typeError = Error.parse <| Native.Testing.typeError errorMessage
 customError = Error.parse <| Native.Testing.customError errorMessage
 
 stringError = Error.parse <| Native.Testing.throwAndCatch errorMessage
+
+nullError = Error.parse <| Native.Testing.throwAndCatch Encode.null
 
 
 testError: String -> Error -> Test
@@ -48,10 +51,10 @@ tests =
   describe "Error"
     [ test "empty" (
       all
-        [ emptyError.name |> shouldEqual "Error"
-        , emptyError.message |> shouldEqual ""
-        , List.length emptyError.stack |> shouldBeGreaterThan 3
-        ]
+      [ emptyError.name |> shouldEqual "Error"
+      , emptyError.message |> shouldEqual ""
+      , List.length emptyError.stack |> shouldBeGreaterThan 3
+      ]
     )
     , testError "Error" defaultError
     , testError "EvalError" evalError
@@ -61,10 +64,18 @@ tests =
     , testError "TypeError" typeError
     , test "stringError" (
       all
-        [ stringError.name |> shouldEqual ""
-        , stringError.message |> shouldEqual errorMessage
-        , List.length stringError.stack |> shouldEqual 0
-        , stringError.location |> shouldBeNothing
-        ]
+      [ stringError.name |> shouldEqual ""
+      , stringError.message |> shouldEqual errorMessage
+      , List.length stringError.stack |> shouldEqual 0
+      , stringError.location |> shouldBeNothing
+      ]
+    )
+    , test "nullError" (
+      all
+      [ nullError.name |> shouldEqual ""
+      , nullError.message |> shouldEqual ""
+      , List.length nullError.stack |> shouldEqual 0
+      , nullError.location |> shouldBeNothing
+      ]
     )
     ]

@@ -47,7 +47,11 @@ var _pauldijou$elm_error$Native_Error = function () {
   // Parse error all the way we can think of
   // and fallback to an empty error if we fail
   function parse(error) {
-    var parsed = { name: '', message: error, stack: Nil, location: Nothing }
+    var parsed = { name: '', message: '', stack: Nil, location: Nothing }
+
+    if (error === undefined || error === null) {
+      return parsed
+    }
 
     if (isString(error)) {
       parsed.message = error
@@ -66,11 +70,13 @@ var _pauldijou$elm_error$Native_Error = function () {
 
     if (isString(stack)) {
       stack = stack.split('\n').map(function (str) { return str.trim() })
-    } else if(Array.isArray(stack)) {
+    } else if (Array.isArray(stack)) {
       stack = stack.filter(isString)
     } else {
       stack = []
     }
+
+    parsed.stack = _elm_lang$core$Native_List.fromArray(stack)
 
     // Normalize location if possible
     var location = undefined
@@ -97,8 +103,6 @@ var _pauldijou$elm_error$Native_Error = function () {
     if (location !== undefined) {
       parsed.location = Just(location)
     }
-
-    parsed.stack = _elm_lang$core$Native_List.fromArray(stack)
 
     return parsed
   }
