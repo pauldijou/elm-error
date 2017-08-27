@@ -8,9 +8,13 @@ var _pauldijou$elm_error$Native_Error = function () {
     return typeof value === 'string'
   }
 
+  var fixedIsNaN = Number.isNaN || function (value) {
+    return value !== value;
+  }
+
   // Test if a value is a valid number
   function isNumber(value) {
-    return typeof value === 'number' && !isNaN(value)
+    return typeof value === 'number' && !fixedIsNaN(value)
   }
 
   // Try to parse a stack line
@@ -44,10 +48,14 @@ var _pauldijou$elm_error$Native_Error = function () {
     }
   }
 
+  function init() {
+    return { name: '', message: '', stack: Nil, location: Nothing }
+  }
+
   // Parse error all the way we can think of
   // and fallback to an empty error if we fail
   function parse(error) {
-    var parsed = { name: '', message: '', stack: Nil, location: Nothing }
+    var parsed = init()
 
     if (error === undefined || error === null) {
       return parsed
@@ -107,7 +115,15 @@ var _pauldijou$elm_error$Native_Error = function () {
     return parsed
   }
 
+  function safeParse(value) {
+    try {
+      return parse(value)
+    } catch (e) {
+      return init()
+    }
+  }
+
   return {
-    parse: parse
+    parse: safeParse
   }
 }()
